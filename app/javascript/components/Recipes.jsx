@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from "react-router-dom"
+import Navbar from './Navbar'
 
 class Recipes extends React.Component {
   state = {
@@ -9,12 +10,19 @@ class Recipes extends React.Component {
   renderRecipes() {
     return this.state.recipes.map(recipe => {
       return (
-        <div className="full-r">
-          <img className="r-img" src={recipe.image} alt="Card image cap" />
-          <div className="r-content">
-            <h5 className="r-title">{recipe.name}</h5>
-            <p className="r-ingredients">{recipe.ingredients}</p>
-            <p className="r-instructions">{recipe.instructions}</p>
+        <div className="col-sm-12 col-md-4 mb-5" key={recipe.name}>
+          <div className="full-r">
+            <div
+              className="r-photo"
+              style={{ backgroundImage: `url(${recipe.image})` }}
+            >
+            </div>
+            <div className="r-content p-2">
+              <h5 className="r-title text-center py-3">{recipe.name}</h5>
+              <p className="r-ingredients">{recipe.ingredients}</p>
+              <p className="r-instructions">{recipe.instructions}</p>
+            </div>
+            <Link to={`/recipes/${recipe.id}`} className="stretched-link" />
           </div>
         </div>
       )
@@ -26,7 +34,6 @@ class Recipes extends React.Component {
       fetch(url)
         .then(response => {
           if (response.ok) {
-            console.log("okidoki");
             return response.json();
           }
           throw new Error("Network response was not ok.");
@@ -37,10 +44,17 @@ class Recipes extends React.Component {
 
   render () {
     return (
-      <div className="container">
-        <h1>Recipes List</h1>
-        <div className="recipes-container">
-          {this.renderRecipes()}
+      <div className="full-page">
+        <div className="header">
+          <Navbar path="/" />
+          <div className="header-title">
+            <h1>Recipes List</h1>
+          </div>
+        </div>
+        <div className="container mt-5">
+          <div className="row">
+            {this.renderRecipes()}
+          </div>
         </div>
       </div>
     )

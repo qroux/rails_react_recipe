@@ -1,0 +1,31 @@
+.r-header {
+  h1 {
+    color: white;
+  }
+  a {
+    color: white;
+    font-size: 20px;
+    transition: 0.4s;
+    &:hover {
+      color: black;
+      text-decoration: none;
+    }
+  }
+  .header-title {
+    height: 23vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+.r-content {
+  h3 {
+    text-align: center;
+    margin: 20px 0;
+  }
+}
+.instructions {
+  p {
+    font-size: 25px;
+  }
+}

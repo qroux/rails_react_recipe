@@ -1,7 +1,7 @@
 class Api::V1::RecipesController < ApplicationController
   def index
-    recipes = Recipe.all.order(created_at: :desc)
-    render json: recipes
+    set_recipes
+    render json: @recipes
   end
 
   def create
@@ -15,9 +15,9 @@ class Api::V1::RecipesController < ApplicationController
 
   def show
     if set_recipe
-      render json: recipe
+      render json: @recipe
     else
-      render json: recipe.errors
+      render json: @recipe.errors
     end
   end
 
@@ -33,5 +33,9 @@ class Api::V1::RecipesController < ApplicationController
 
   def set_recipe
     @recipe ||= Recipe.find(params[:id])
+  end
+
+  def set_recipes
+    @recipes ||= Recipe.all.order(created_at: :desc)
   end
 end

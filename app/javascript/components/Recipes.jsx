@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from "react-router-dom"
 import Navbar from './Navbar'
+import CreateRecipeBtn from './Recipes/CreateRecipeBtn'
 
 class Recipes extends React.Component {
   state = {
@@ -52,6 +53,8 @@ class Recipes extends React.Component {
           </div>
         </div>
         <div className="container mt-5">
+          <CreateRecipeBtn />
+          <hr />
           <div className="row">
             {this.renderRecipes()}
           </div>

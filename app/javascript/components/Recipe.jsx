@@ -6,6 +6,10 @@ class Recipe extends React.Component {
   state = {}
 
   componentDidMount (){
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    console.log('token :')
+    console.log(token)
+    console.log(this.props.history)
     const id = this.props.match.params.id;
     const url = `/api/v1/show/${id}`;
     fetch(url)
@@ -33,7 +37,7 @@ class Recipe extends React.Component {
 
       return (
         <div className="full-page">
-          <div className="r-header" style={{ backgroundImage: `url(${recipe.image})`, height: '30vh', width: '100%' }}>
+          <div className="r-header" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${recipe.image})`, height: '30vh', width: '100%', backgroundSize: 'cover', backgroundPosition: 'center' }}>
             <Navbar path="/recipes" />
             <div className="header-title">
               <h1>{recipe.name}</h1>
@@ -44,15 +48,17 @@ class Recipe extends React.Component {
               <div className="ingredients col-2">
                 <h3>Ingredients</h3>
                 <p>{ingredientList}</p>
+                <div className="text-center">
+                  <div onClick={this.deleteRecipe} className="btn btn-danger">Delete</div>
+                </div>
               </div>
-              <div className="instructions col-10 px-5">
+              <div className="instructions col-10">
                 <h3>Instructions</h3>
-                <p>{recipe.instruction}</p>
+                <div className="instructions-text px-5 py-2">
+                  <p>{recipe.instruction}</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="text-center">
-            <div onClick={this.deleteRecipe} className="btn btn-danger">Delete</div>
           </div>
         </div>
       )
@@ -62,7 +68,15 @@ class Recipe extends React.Component {
   deleteRecipe = () => {
     const id = this.state.recipe.id;
     const url = `/api/v1/destroy/${id}`;
-    fetch(url, {method: 'DELETE'})
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        "X-CSRF-Token": token,
+        "Content-Type": "application/json"
+      }
+    })
       .then(response => {
         if (response.ok) {
           return response.json();

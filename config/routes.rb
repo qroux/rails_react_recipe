@@ -1,6 +1,15 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
+      get 'devise/index'
+      get 'devise/create'
+      get 'devise/show'
+      get 'devise/destroy'
+    end
+  end
+  devise_for :users
+  namespace :api do
+    namespace :v1 do
       get 'recipes/index'
       post 'recipes/create'
       get '/show/:id', to: 'recipes#show'

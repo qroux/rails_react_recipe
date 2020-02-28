@@ -1,11 +1,30 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
+import deviseUser from '../apis/deviseUser'
 
 class Recipe extends React.Component {
-  state = {}
-
+  state = {
+    current_user: null
+  }
   componentDidMount (){
+    deviseUser.get('/api/v1/devise/show',{
+    })
+    .then((response) => {
+      if(response.data.email){
+        this.setState({
+          currentUser: response.data.email
+        })
+      } else {
+        this.setState({
+          currentUser: null
+        })
+      }
+    })
+    .catch(function(error){
+      console.log(error);
+    })
+
     const token = document.querySelector('meta[name="csrf-token"]').content;
     console.log('token :')
     console.log(token)
@@ -48,9 +67,7 @@ class Recipe extends React.Component {
               <div className="ingredients col-2">
                 <h3>Ingredients</h3>
                 <p>{ingredientList}</p>
-                <div className="text-center">
-                  <div onClick={this.deleteRecipe} className="btn btn-danger">Delete</div>
-                </div>
+                {this.renderDeleteButton()}
               </div>
               <div className="instructions col-10">
                 <h3>Instructions</h3>
@@ -60,6 +77,18 @@ class Recipe extends React.Component {
               </div>
             </div>
           </div>
+        </div>
+      )
+    }
+  }
+
+  renderDeleteButton (){
+    if (this.state.currentUser == null) {
+      return
+    } else {
+      return (
+        <div className="text-center">
+          <div onClick={this.deleteRecipe} className="btn btn-danger">Delete</div>
         </div>
       )
     }
